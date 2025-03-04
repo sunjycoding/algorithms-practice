@@ -1,4 +1,4 @@
-package neetcode.day001;
+package neetcode.arrays_and_hashing;
 
 import java.util.HashMap;
 import java.util.Map;
