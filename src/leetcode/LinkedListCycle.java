@@ -7,6 +7,13 @@ package leetcode;
  */
 public class LinkedListCycle {
 
+    //  I use two pointers: a slow one that moves one step,
+    //  and a fast one that moves two steps.
+    //  If there's a cycle, the fast pointer will eventually meet the slow one.
+    //  If the fast pointer hits null, the list has no cycle.
+
+    //  Time O(n)
+    //  Space O(1)
     public boolean hasCycle(ListNode head) {
         if (head == null || head.next == null) {
             return false;
@@ -23,7 +30,7 @@ public class LinkedListCycle {
         return false;
     }
 
-    static class ListNode {
+    public static class ListNode {
         int val;
         ListNode next;
 

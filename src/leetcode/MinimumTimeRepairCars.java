@@ -9,6 +9,12 @@ import java.util.Arrays;
  */
 public class MinimumTimeRepairCars {
 
+    //  This is a classic binary search on answer problem.
+    //  I guess a time T, and check if all workers together can fix enough cars within T.
+    //  If yes, I try smaller time. If no, I increase T
+
+    //  Time O(nlogmaxTime)
+    //  Space O(1)
     public long repairCars(int[] ranks, int cars) {
         Arrays.sort(ranks);
         long left = 1;
