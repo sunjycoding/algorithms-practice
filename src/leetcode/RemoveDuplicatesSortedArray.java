@@ -23,7 +23,7 @@ public class RemoveDuplicatesSortedArray {
             }
             fast++;
         }
-        return slow;
+        return slow + 1;
     }
 
 }
