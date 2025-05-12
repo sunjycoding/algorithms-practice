@@ -1,7 +1,6 @@
 package leetcode;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
@@ -11,55 +10,64 @@ import java.util.PriorityQueue;
  */
 public class FindMinimumTimeReachLastRoomII {
 
+    private static final int INF = 0x3f3f3f3f;
+
+    static class State implements Comparable<State> {
+
+        int x, y, dis;
+
+        State(int x, int y, int dis) {
+            this.x = x;
+            this.y = y;
+            this.dis = dis;
+        }
+
+        @Override
+        public int compareTo(State other) {
+            return Integer.compare(this.dis, other.dis);
+        }
+    }
+
     public int minTimeToReach(int[][] moveTime) {
         int n = moveTime.length;
         int m = moveTime[0].length;
-        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-
-        int[][] visited = new int[n][m];
-        for (int[] row : visited) {
-            Arrays.fill(row, Integer.MAX_VALUE);
+        int[][] d = new int[n][m];
+        boolean[][] v = new boolean[n][m];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(d[i], INF);
         }
-        visited[0][0] = 0;
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
-        pq.offer(new int[]{0, 0, 0});
-
-        while (!pq.isEmpty()) {
-            int[] curr = pq.poll();
-            int time = curr[0], x = curr[1], y = curr[2];
-
-            // 到达终点
-            if (x == n - 1 && y == m - 1) {
-                return time;
+        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        d[0][0] = 0;
+        PriorityQueue<State> q = new PriorityQueue<>();
+        q.offer(new State(0, 0, 0));
+        while (!q.isEmpty()) {
+            State s = q.poll();
+            if (v[s.x][s.y]) {
+                continue;
             }
+            if (s.x == n - 1 && s.y == m - 1) {
+                break;
+            }
+            v[s.x][s.y] = true;
 
-            // 向四个方向探索
-            for (int[] dir : directions) {
-                int nx = x + dir[0];
-                int ny = y + dir[1];
-                if (nx < 0 || ny < 0 || nx >= n || ny >= m) {
+            for (int[] dir : dirs) {
+                int nx = s.x + dir[0];
+                int ny = s.y + dir[1];
+                if (nx < 0 || nx >= n || ny < 0 || ny >= m) {
                     continue;
                 }
-
-                int arriveTime = time + 1;
-
-                if (arriveTime < moveTime[nx][ny]) {
-                    arriveTime = moveTime[nx][ny];
-                }
-
-                if ((arriveTime % 2) != (moveTime[nx][ny] % 2)) {
-                    arriveTime++;
-                }
-
-                if (arriveTime < visited[nx][ny]) {
-                    visited[nx][ny] = arriveTime;
-                    pq.offer(new int[]{arriveTime, nx, ny});
+                int dist =
+                        Math.max(d[s.x][s.y], moveTime[nx][ny]) +
+                                ((s.x + s.y) % 2) +
+                                1;
+                if (d[nx][ny] > dist) {
+                    d[nx][ny] = dist;
+                    q.offer(new State(nx, ny, dist));
                 }
             }
         }
-
-        return -1;
+        return d[n - 1][m - 1];
     }
 
 }
