@@ -7,41 +7,41 @@ import java.util.Arrays;
  */
 public class PermutationString {
 
-    //  Are both strings guaranteed to contain only lowercase English letters?
-    //  Can either s1 or s2 be empty?
-    //  Do we need an exact permutation match as a substring, or just character inclusion?
+    //  Can s1 or s2 be empty?
+    //  Do the strings contain only lowercase English letters?
+    //  Do I just need to return whether a permutation exists, or return all positions?
 
-    //  I count the frequency of each character in s1 and store it in count1.
-    //  Then I slide a window of size s1.length() over s2,
-    //  maintaining a frequency count count2 for the current window.
-    //  At each step, I compare count1 and count2; if they match, we found a valid permutation.
+    //  I’m using a fixed-length sliding window of size equal to s1.length(),
+    //  and tracking the character frequencies with two arrays of size 26.
+    //  At each step, I compare the two arrays,
+    //  and if they match, then the substring is a permutation of s1.
 
     //  Time O(n)
     //  Space O(1)
     public boolean checkInclusion(String s1, String s2) {
-        if (s1.length() > s2.length()) {
+        int m = s1.length();
+        int n = s2.length();
+        if (m > n) {
             return false;
         }
-
-        int[] count1 = new int[26];
-        int[] count2 = new int[26];
-
-        for (int i = 0; i < s1.length(); i++) {
-            count1[s1.charAt(i) - 'a']++;
+        int[] count = new int[26];
+        for (int i = 0; i < m; i++) {
+            count[s1.charAt(i) - 'a']++;
         }
-
-        for (int i = 0; i < s2.length(); i++) {
-            count2[s2.charAt(i) - 'a']++;
-
-            if (i >= s1.length()) {
-                count2[s2.charAt(i - s1.length()) - 'a']--;
+        int[] windowCount = new int[26];
+        int left = 0;
+        for (int right = 0; right < n; right++) {
+            char rightCh = s2.charAt(right);
+            windowCount[rightCh - 'a']++;
+            while (right - left + 1 > m) {
+                char leftCh = s2.charAt(left);
+                windowCount[leftCh - 'a']--;
+                left++;
             }
-
-            if (Arrays.equals(count1, count2)) {
+            if (Arrays.equals(count, windowCount)) {
                 return true;
             }
         }
-
         return false;
     }
 

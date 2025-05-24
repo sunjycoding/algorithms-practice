@@ -12,50 +12,52 @@ public class MinimumWindowSubstring {
     //  Can t contain duplicate characters?
     //  Can s or t be empty?
 
-    //  I use a HashMap to store character frequencies in t, and a sliding window to scan s.
-    //  For each new character at the right,
-    //  I update the count and track how many required characters are fully matched (formed++).
-    //  Once all required characters are met (formed == number of unique characters in t),
-    //  I shrink the left side to minimize the window.
-    //  Finally, I return the shortest valid substring found.
+    //  I'm using the sliding window + HashMap approach.
+    //  First, I count the frequency of each character in t.
+    //  Then I expand the window over s while maintaining the character frequencies in the current window.
+    //  Once the window covers all characters from t,
+    //  I try to shrink it and update the minimum window length.
 
     //  Time O(n + m)
-    //  Space O(k)
+    //  Space O(m + n)
     public String minWindow(String s, String t) {
-        if (s.length() < t.length()) {
+        int n = s.length();
+        int m = t.length();
+        if (m > n) {
             return "";
         }
         Map<Character, Integer> tCount = new HashMap<>();
-        for (int i = 0; i < t.length(); i++) {
-            char key = t.charAt(i);
-            tCount.put(key, tCount.getOrDefault(key, 0) + 1);
+        for (int i = 0; i < m; i++) {
+            char ch = t.charAt(i);
+            tCount.put(ch, tCount.getOrDefault(ch, 0) + 1);
         }
         Map<Character, Integer> windowCount = new HashMap<>();
-        int left = 0;
         int start = 0;
+        int minLength = n + 1;
+        int required = tCount.size();
         int formed = 0;
-        int minLength = Integer.MAX_VALUE;
-        for (int right = 0; right < s.length(); right++) {
-            char rightChar = s.charAt(right);
-            windowCount.put(rightChar, windowCount.getOrDefault(rightChar, 0) + 1);
-            if (tCount.containsKey(rightChar) && tCount.get(rightChar).equals(windowCount.get(rightChar))) {
+        int left = 0;
+        for (int right = 0; right < n; right++) {
+            char rightCh = s.charAt(right);
+            windowCount.put(rightCh, windowCount.getOrDefault(rightCh, 0) + 1);
+            if (tCount.containsKey(rightCh) && tCount.get(rightCh).equals(windowCount.get(rightCh))) {
                 formed++;
             }
-            while (formed == tCount.size()) {
+            while (formed == required) {
                 int length = right - left + 1;
                 if (length < minLength) {
                     minLength = length;
                     start = left;
                 }
-                char leftChar = s.charAt(left);
-                windowCount.put(leftChar, windowCount.get(leftChar) - 1);
-                if (tCount.containsKey(leftChar) && windowCount.get(leftChar) < tCount.get(leftChar)) {
+                char leftCh = s.charAt(left);
+                windowCount.put(leftCh, windowCount.get(leftCh) - 1);
+                left++;
+                if (tCount.containsKey(leftCh) && tCount.get(leftCh) > windowCount.get(leftCh)) {
                     formed--;
                 }
-                left++;
             }
         }
-        return minLength == Integer.MAX_VALUE ? "" : s.substring(start, start + minLength);
+        return minLength == n + 1 ? "" : s.substring(start, start + minLength);
     }
 
 }

@@ -2,14 +2,16 @@ package neetcode150.trees;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * @author Created by sunjy on 5/4/25
  */
 public class BinaryTreeLevelOrderTraversal {
 
+    //  Should the output be grouped by levels into a list of lists, or should it be flattened into a single list?
+    
     //  I use BFS for level-order traversal.
     //  I maintain a queue, process nodes level by level
     //  by tracking the size of the current level,
@@ -22,20 +24,20 @@ public class BinaryTreeLevelOrderTraversal {
         if (root == null) {
             return ans;
         }
-        Queue<TreeNode> queue = new ArrayDeque<>();
+        Deque<TreeNode> queue = new ArrayDeque<>();
         queue.offer(root);
         while (!queue.isEmpty()) {
-            int levelSize = queue.size();
+            int size = queue.size();
             List<Integer> level = new ArrayList<>();
-            for (int i = 0; i < levelSize; i++) {
-                TreeNode current = queue.poll();
-                if (current.left != null) {
-                    queue.offer(current.left);
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                level.add(node.val);
+                if (node.left != null) {
+                    queue.offer(node.left);
                 }
-                if (current.right != null) {
-                    queue.offer(current.right);
+                if (node.right != null) {
+                    queue.offer(node.right);
                 }
-                level.add(current.val);
             }
             ans.add(level);
         }

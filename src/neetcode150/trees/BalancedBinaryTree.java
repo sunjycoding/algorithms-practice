@@ -5,6 +5,10 @@ package neetcode150.trees;
  */
 public class BalancedBinaryTree {
 
+    //  Just to confirm, is the definition of 'balanced' here that for every node, the height difference between its left and right subtree is at most 1
+    //  Is an empty tree considered balanced?
+    //  Just to clarify — this problem is purely structural, correct? The node values don’t affect whether the tree is balanced?
+
     //  I use post-order DFS to calculate the height of subtrees and simultaneously check if they are balanced.
     //  If I find any unbalanced subtree, I return -1 immediately to short-circuit further computation.
 

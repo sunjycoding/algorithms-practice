@@ -5,6 +5,10 @@ package neetcode150.trees;
  */
 public class DiameterBinaryTree {
 
+    //  Does the diameter count nodes or edges? For example, is the path 1-2-3 considered length 3 or 2?
+    //  Can root be null? If so, what should the diameter be in that case?
+    //  Can node values be negative? And is the tree balanced, or arbitrary?
+
     //  I use post-order DFS to compute
     //  the height of left and right subtrees for each node.
     //  At each node, I update the diameter as left + right,

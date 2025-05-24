@@ -8,9 +8,6 @@ public class InvertBinaryTree {
     //  Can the input tree be null?
     //  Should we modify the original tree or return a new one?
 
-    //  I use recursion. For each node, I recursively invert its left and right subtrees, then swap them and return the node.
-    //This is a bottom-up approach to invert the entire tree.
-
     //  I use recursion.
     //  For each node,
     //  I recursively invert its left and right subtrees, then swap them and return the node.

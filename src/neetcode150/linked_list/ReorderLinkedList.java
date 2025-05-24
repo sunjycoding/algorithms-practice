@@ -17,34 +17,37 @@ public class ReorderLinkedList {
     //  Time O(n)
     //  Space O(1)
     public void reorderList(ListNode head) {
-        if (head == null) {
-            return;
-        }
         ListNode slow = head;
         ListNode fast = head;
         while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
         }
-        ListNode current = slow;
+        ListNode second = reverse(slow.next);
+        slow.next = null;
+        ListNode first = head;
+        while (second != null) {
+            ListNode tmp1 = first.next;
+            ListNode tmp2 = second.next;
+
+            first.next = second;
+            second.next = tmp1;
+
+            first = tmp1;
+            second = tmp2;
+        }
+    }
+
+    private ListNode reverse(ListNode node) {
         ListNode prev = null;
+        ListNode current = node;
         while (current != null) {
             ListNode next = current.next;
             current.next = prev;
             prev = current;
             current = next;
         }
-        ListNode first = head;
-        ListNode second = prev;
-        while (second.next != null) {
-            ListNode temp = first.next;
-            first.next = second;
-            first = temp;
-
-            temp = second.next;
-            second.next = first;
-            second = temp;
-        }
+        return prev;
     }
 
     public static class ListNode {

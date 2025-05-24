@@ -9,23 +9,26 @@ public class FindMinimumRotatedSortedArray {
     //  Can the array contain duplicate values?
     //  Is the array guaranteed to be non-empty?
 
-    //  Since the array is a rotated sorted array, there's a pivot where the order breaks.
-    //  I use binary search to find that pivot by comparing nums[mid] to nums[nums.length - 1],
-    //  and narrow the range accordingly.
+    //  I used binary search to find the minimum in a rotated sorted array.
+    //  By comparing nums[mid] and nums[right], I can determine where the minimum lies.
+    //  If nums[mid] > nums[right], the minimum must be to the right.
+    //  Otherwise, it’s to the left, possibly including mid.
 
     //  Time O(logn)
     //  Space O(1)
     public int findMin(int[] nums) {
         int left = 0;
-        int right = nums.length;
+        int right = nums.length - 1;
+
         while (left < right) {
             int mid = left + (right - left) / 2;
-            if (nums[mid] > nums[nums.length - 1]) {
+            if (nums[mid] > nums[right]) {
                 left = mid + 1;
             } else {
                 right = mid;
             }
         }
+
         return nums[left];
     }
 

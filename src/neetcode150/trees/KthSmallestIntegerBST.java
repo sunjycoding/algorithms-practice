@@ -5,8 +5,13 @@ package neetcode150.trees;
  */
 public class KthSmallestIntegerBST {
 
+    //  Is it guaranteed that k is within the total number of nodes?
+
     //  I use in-order traversal because it gives a sorted sequence in a BST.
     //  I maintain a counter while traversing, and return the k-th node when the counter reaches k.
+
+    //  Time O(n)
+    //  Space O(h)
     private int count = 0;
     private int result = -1;
 

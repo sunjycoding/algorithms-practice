@@ -10,6 +10,9 @@ import java.util.Queue;
  */
 public class BinaryTreeRightSideView {
 
+    //  Should I return the first visible node from the right at each level,
+    //  even if a deeper left-side node might be visible if viewed from an angle
+
     //  I use BFS to do level-order traversal.
     //  For each level, I only add the last node we visit into the result.
     //  This gives us the rightmost node at each level — the visible node from the right.
